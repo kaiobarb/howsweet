@@ -2,35 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
 import Image from "next/image";
+import { constructFrontImageUrl } from "@/lib/utils";
 
-function constructFrontImageUrl(
-  barcode: string,
-  rev = 1,
-  fallback = false,
-  resolution = "400"
-) {
-  const basePath = "https://images.openfoodfacts.org/images/products/";
-  let folderPath =
-    barcode.length > 8
-      ? `${barcode.substring(0, 3)}/${barcode.substring(
-          3,
-          6
-        )}/${barcode.substring(6, 9)}/${barcode.substring(9)}`
-      : barcode;
-
-  if (fallback) {
-    return `${basePath}${folderPath}/1.jpg`;
-  }
-  // Assuming 'front_en' as the default key for English front images
-  const imageKey = "front_en";
-  // Revision numbers can change; you may need to fetch this dynamically or use a placeholder if not available.
-
-  const filename = `${imageKey}.${rev}.${resolution}.jpg`;
-
-  return `${basePath}${folderPath}/${filename}`;
-}
-
-export async function Page() {
+export default async function Page() {
   let sugars = 0;
   let productName = "";
   let brands = "";
@@ -107,5 +81,3 @@ export async function Page() {
     </div>
   );
 }
-
-export default Page;
