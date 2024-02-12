@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "How Sweet!",
-  description: "See how sweet your tooth actually is",
+  description: "Guess how much sugar is in your food",
 };
 
 export default function RootLayout({
