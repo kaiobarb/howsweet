@@ -30,7 +30,7 @@ function constructFrontImageUrl(
   return `${basePath}${folderPath}/${filename}`;
 }
 
-export async function Landing() {
+export async function Page() {
   let sugars = 0;
   let productName = "";
   let brands = "";
@@ -108,4 +108,4 @@ export async function Landing() {
   );
 }
 
-export default Landing;
+export default Page;
