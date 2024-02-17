@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { Button } from "./ui/button";
 import {
   NavigationMenu,
@@ -6,10 +7,18 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
+import { confetti } from "@tsparticles/confetti";
 
 const Nav = () => {
+  useEffect(() => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  }, []);
   return (
-    <header className="py-4 bg-gray-900 shrink-0">
+    <header className="py-4 bg-primary shrink-0">
       <div className="container flex items-center gap-4 px-4 text-gray-100 md:gap-6">
         <div className="space-y-1">
           <h1 className="text-lg font-bold tracking-tighter">How Sweet!</h1>
