@@ -1,0 +1,71 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableRow,
+} from "./ui/table";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useFormState } from "react-dom";
+
+interface GuessFormProps {
+  children: React.ReactNode;
+  className?: string;
+  onSubmit: (prevState: any, formData: FormData) => Promise<string>;
+}
+
+const initialState: { attempts: string[] } | string = {
+  attempts: [],
+};
+
+export default function GuessForm({
+  children,
+  className,
+  onSubmit,
+}: GuessFormProps) {
+  const [state, formAction] = useFormState(onSubmit, initialState);
+
+  // print the state to the console
+  useEffect(() => {
+    console.log("State:", state);
+  }, [state]);
+
+  return (
+    <div className={className}>
+      <form action={formAction} className="flex w-full justify-center py-4">
+        <Input
+          name="guess"
+          className="max-w-xs md:mr-2 lg:mr-4"
+          min="0"
+          placeholder="Enter your guess in grams per serving"
+          type="number"
+          required
+        />
+        <Button type="submit">Guess</Button>
+      </form>
+      {children}
+      <Table className="">
+        <TableCaption>Your guesses</TableCaption>
+        <TableBody>
+          {state.attempts.map((attempt, index) => {
+            return (
+              <TableRow className="bg-grey-100">
+                {attempt.split(",").map((cell: string, index: number) => {
+                  return <TableCell key={index}>{cell}</TableCell>;
+                })}
+                {/* // <TableCell className="font-medium">{attempt}</TableCell>
+                // <TableCell>{index}</TableCell>
+                // <TableCell>Credit Card</TableCell>
+                // <TableCell className="text-right">$250.00</TableCell> */}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}

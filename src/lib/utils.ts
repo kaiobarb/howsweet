@@ -21,7 +21,7 @@ export function constructFrontImageUrl(
       : barcode;
 
   if (fallback) {
-    return `${basePath}${folderPath}/1.jpg`;
+    return `/images/fallback.svg`;
   }
   // Assuming 'front_en' as the default key for English front images
   const imageKey = "front_en";
@@ -30,4 +30,26 @@ export function constructFrontImageUrl(
   const filename = `${imageKey}.${rev}.${resolution}.jpg`;
 
   return `${basePath}${folderPath}/${filename}`;
+}
+
+export async function guessScore(delta: number) {
+  let magnitude = "";
+  let highOrLow = "↓";
+  if (delta < 0) {
+    highOrLow = "↑";
+  }
+  const absDelta = Math.abs(delta);
+  if (absDelta < 5) {
+    magnitude = "Extremely close";
+  }
+  if (absDelta < 10) {
+    magnitude = "Very close";
+  }
+  if (absDelta < 15) {
+    magnitude = "Close-ish";
+  }
+  if (absDelta > 20) {
+    magnitude = "You're way off";
+  }
+  return `${magnitude},${highOrLow}`;
 }

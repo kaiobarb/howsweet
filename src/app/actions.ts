@@ -1,3 +1,4 @@
+"use server";
 import { Product } from "@/lib/types";
 
 export async function fetchGuess(): Promise<Product | null> {
@@ -26,25 +27,29 @@ export async function fetchGuess(): Promise<Product | null> {
     if (!response.ok) throw new Error("Network response was not ok.");
 
     const data = await response.json();
-    // from the 20 products, pick one at random
+    // filter out products without images and no sugar
+    data.products = data.products.filter((product: Product) => {
+      return (
+        !!product.images &&
+        !!product.images.front_en &&
+        !!product.nutriments &&
+        parseFloat(product.nutriments.sugars) > 0
+      );
+    });
+    // ensure we have at least one product
+    if (data.products.length === 0) {
+      // retry if no products found
+      console.log("No products found, retrying...");
+      return fetchGuess();
+    }
     const randomIndex = Math.floor(Math.random() * data.products.length);
     const randomProduct = data.products[randomIndex];
-    console.log(randomProduct.nutriments.sugars);
+    // console.log(randomProduct);
 
     return randomProduct;
   } catch (error) {
     console.error("Error fetching products:", error);
   }
   // if not found or other error, return empty response
-  return null;
-}
-
-export async function makeGuess(current: Product | null, guess: number) {
-  if (current != null) {
-    const delta = Math.abs(
-      parseFloat(current.nutriments.sugars.replace("g", "")) - guess
-    );
-    return delta;
-  }
   return null;
 }

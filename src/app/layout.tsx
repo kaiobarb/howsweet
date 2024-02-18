@@ -21,9 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen">
           <Nav />
-          <main className="flex-1 py-6 grid place-items-center">
-            {children}
-          </main>
+          <main className="flex-1 py-6 grid ">{children}</main>
         </div>
       </body>
     </html>
