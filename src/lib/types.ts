@@ -30,6 +30,7 @@ export interface Product {
   brands: string;
   categories: string;
   countries: string;
+  serving_size: string;
   images: {
     [key: string]: {
       uploaded_t: string;

@@ -3,7 +3,7 @@ import { Product } from "@/lib/types";
 
 export async function fetchGuess(): Promise<Product | null> {
   console.log("GET request made to /api/guess");
-  const fields = "code,product_name,nutriments,brands,images";
+  const fields = "code,product_name,nutriments,brands,images,serving_size";
   const country = "united-states"; // Filtering by country
   const pageSize = 20; // Number of results per page
   const page = Math.floor(Math.random() * 8000) + 1;

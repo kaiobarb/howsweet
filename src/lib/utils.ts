@@ -43,12 +43,11 @@ export async function guessScore(delta: number) {
     magnitude = "Extremely close";
   }
   if (absDelta < 10) {
-    magnitude = "Very close";
+    magnitude = "Getting closer";
   }
   if (absDelta < 15) {
-    magnitude = "Close-ish";
-  }
-  if (absDelta > 20) {
+    magnitude = "Within range";
+  } else {
     magnitude = "You're way off";
   }
   return `${magnitude},${highOrLow}`;

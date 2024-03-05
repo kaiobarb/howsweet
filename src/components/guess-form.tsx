@@ -15,7 +15,10 @@ import { useFormState } from "react-dom";
 interface GuessFormProps {
   children: React.ReactNode;
   className?: string;
-  onSubmit: (prevState: any, formData: FormData) => Promise<string>;
+  onSubmit: (
+    prevState: { attempts: string[] },
+    formData: FormData
+  ) => Promise<string>;
 }
 
 const initialState: { attempts: string[] } | string = {
@@ -48,12 +51,12 @@ export default function GuessForm({
         <Button type="submit">Guess</Button>
       </form>
       {children}
-      <Table className="">
+      <Table className="place-items-center shrink">
         <TableCaption>Your guesses</TableCaption>
         <TableBody>
           {state.attempts.map((attempt, index) => {
             return (
-              <TableRow className="bg-grey-100">
+              <TableRow key={attempt} className="bg-grey-100">
                 {attempt.split(",").map((cell: string, index: number) => {
                   return <TableCell key={index}>{cell}</TableCell>;
                 })}

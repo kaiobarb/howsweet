@@ -16,6 +16,7 @@ import { Product } from "@/lib/types";
 import { fetchGuess } from "../actions";
 
 import GuessForm from "@/components/guess-form";
+import NutritionLabel from "./components/nutrition-label";
 
 export default async function Play() {
   let currentGuess: Product | null = null;
@@ -33,7 +34,7 @@ export default async function Play() {
         currentGuess.code,
         currentGuess.images.front_en.rev
       );
-      console.log("Image URL:", imageUrl);
+      console.log("current guess", currentGuess);
     }
   }
 
@@ -44,8 +45,8 @@ export default async function Play() {
     "use server";
     const attempts = prevState.attempts;
     const guess = formData.get("guess") as unknown as number;
-    if (!guess || !currentGuess) return;
-    const delta = Math.abs(parseFloat(currentGuess.nutriments.sugars) - guess);
+    if (!guess || !currentGuess) return "";
+    const delta = parseFloat(currentGuess.nutriments.sugars) - guess;
     console.log(
       "You guessed:",
       guess,
@@ -61,15 +62,10 @@ export default async function Play() {
   };
 
   return (
-    <div className="container">
-      {/* <div className="flex flex-col justify-center gap-4"> */}
-      {/* <div className="mx-auto flex flex-col w-full items-center justify-center p-4 sm:p-8"> */}
-      <GuessForm
-        onSubmit={submitGuess}
-        className="mx-auto flex flex-col w-full items-center justify-center"
-      >
+    <div className="container flex flex-col m-auto justify-center">
+      <div className="flex justify-center">
         <Card>
-          <CardHeader>
+          <CardHeader className="text-center">
             <CardTitle>{currentGuess?.product_name}</CardTitle>
             <CardDescription>
               {currentGuess?.brands
@@ -81,7 +77,7 @@ export default async function Play() {
             <Suspense fallback={<Loading />}>
               <Image
                 alt="Item"
-                className="aspect-[1/1] overflow-hidden rounded-lg object-contain object-center"
+                className="aspect-[1/1] overflow-hidden rounded-lg object-contain object-center rounded-lg"
                 height="400"
                 src={imageUrl || "/placeholder.webp"}
                 width="400"
@@ -92,9 +88,17 @@ export default async function Play() {
             <div className="w-full"></div>
           </CardFooter>
         </Card>
-      </GuessForm>
-      {/* </div> */}
-      {/* </div> */}
+        {currentGuess && (
+          <NutritionLabel
+            product={currentGuess}
+            className="border border-black m-5 float-left w-[400px] p-2 rounded-lg"
+          />
+        )}
+      </div>
+      <GuessForm
+        onSubmit={submitGuess}
+        className="flex flex-col items-center justify-center"
+      ></GuessForm>
     </div>
   );
 }
