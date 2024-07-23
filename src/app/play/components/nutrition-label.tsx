@@ -57,7 +57,6 @@ export default function NutritionLabel({
                 } ${unit}`}</td>
               </tr>
             );
-          else return <div />;
         })}
       </table>
     </div>
