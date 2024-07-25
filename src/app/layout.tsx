@@ -20,14 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system">
-        <div className="flex flex-col min-h-screen">
-          <Nav />
-          <main className="flex-1 py-6 grid ">{children}</main>
-        </div>
-      </ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          <div className="flex flex-col min-h-screen bg-background">
+            <Nav />
+            <main className="flex-1 py-6 grid ">{children}</main>
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

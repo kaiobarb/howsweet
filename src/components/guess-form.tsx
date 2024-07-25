@@ -13,12 +13,12 @@ import { Input } from "./ui/input";
 import { useFormState } from "react-dom";
 
 interface GuessFormProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   onSubmit: (
     prevState: { attempts: string[] },
     formData: FormData
-  ) => Promise<string>;
+  ) => Promise<{ attempts: string[] }>;
 }
 
 const initialState: { attempts: string[] } | string = {

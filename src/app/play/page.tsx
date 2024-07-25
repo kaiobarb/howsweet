@@ -21,7 +21,6 @@ import NutritionLabel from "./components/nutrition-label";
 export default async function Play() {
   let currentGuess: Product | null = null;
   let imageUrl = "";
-  const attempts: string[] = [];
 
   if (currentGuess === null) {
     currentGuess = await fetchGuess();
@@ -45,20 +44,22 @@ export default async function Play() {
     "use server";
     const attempts = prevState.attempts;
     const guess = formData.get("guess") as unknown as number;
-    if (!guess || !currentGuess) return "";
-    const delta = parseFloat(currentGuess.nutriments.sugars) - guess;
-    console.log(
-      "You guessed:",
-      guess,
-      "g. The actual sugar content is",
-      currentGuess.nutriments.sugars,
-      "g. You were off by",
-      delta,
-      "g."
-    );
-    const score = await guessScore(delta);
-    console.log("Your score is:", score);
-    return { attempts: [...attempts, `${guess.toString()},${score}`] };
+    if (guess && currentGuess) {
+      const delta = parseFloat(currentGuess.nutriments.sugars) - guess;
+      console.log(
+        "You guessed:",
+        guess,
+        "g. The actual sugar content is",
+        currentGuess.nutriments.sugars,
+        "g. You were off by",
+        delta,
+        "g."
+      );
+      const score = await guessScore(delta);
+      console.log("Your score is:", score);
+      return { attempts: [...attempts, `${guess.toString()},${score}`] };
+    }
+    return { attempts: [] };
   };
 
   return (
