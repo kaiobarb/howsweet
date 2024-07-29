@@ -1,13 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableRow,
-} from "./ui/table";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useFormState } from "react-dom";
@@ -16,7 +8,7 @@ interface GuessFormProps {
   children?: React.ReactNode;
   className?: string;
   onSubmit: (
-    prevState: { attempts: string[] },
+    // prevState: { attempts: string[] },
     formData: FormData
   ) => Promise<{ attempts: string[] }>;
 }
@@ -30,16 +22,11 @@ export default function GuessForm({
   className,
   onSubmit,
 }: GuessFormProps) {
-  const [state, formAction] = useFormState(onSubmit, initialState);
-
-  // print the state to the console
-  useEffect(() => {
-    console.log("State:", state);
-  }, [state]);
+  // const [state, formAction] = useFormState(onSubmit, initialState);
 
   return (
     <div className={className}>
-      <form action={formAction} className="flex w-full justify-center py-4">
+      <form action={onSubmit} className="flex w-full justify-center py-4">
         <Input
           name="guess"
           className="max-w-xs md:mr-2 lg:mr-4"
@@ -51,7 +38,7 @@ export default function GuessForm({
         <Button type="submit">Guess</Button>
       </form>
       {children}
-      <Table className="place-items-center shrink">
+      {/* <Table className="place-items-center shrink">
         <TableCaption>Your guesses</TableCaption>
         <TableBody>
           {state.attempts.map((attempt, index) => {
@@ -63,12 +50,12 @@ export default function GuessForm({
                 {/* // <TableCell className="font-medium">{attempt}</TableCell>
                 // <TableCell>{index}</TableCell>
                 // <TableCell>Credit Card</TableCell>
-                // <TableCell className="text-right">$250.00</TableCell> */}
+                // <TableCell className="text-right">$250.00</TableCell> *
               </TableRow>
             );
           })}
         </TableBody>
-      </Table>
+      </Table> */}
     </div>
   );
 }

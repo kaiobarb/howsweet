@@ -13,17 +13,17 @@ import {
 } from "@/components/ui/card";
 import Loading from "../loading";
 import { Product } from "@/lib/types";
-import { fetchGuess } from "../actions";
+import { fetchProduct } from "../actions";
 
 import GuessForm from "@/components/guess-form";
-import NutritionLabel from "./components/nutrition-label";
+import Submissions from "./components/submissions";
 
 export default async function Play() {
   let currentGuess: Product | null = null;
   let imageUrl = "";
 
   if (currentGuess === null) {
-    currentGuess = await fetchGuess();
+    currentGuess = await fetchProduct();
 
     if (!currentGuess?.images || !currentGuess.images.front_en) {
       console.log("No front image found, using fallback");
@@ -38,11 +38,11 @@ export default async function Play() {
   }
 
   const submitGuess = async (
-    prevState: { attempts: string[] },
+    // prevState: { attempts: string[] },
     formData: FormData
   ) => {
     "use server";
-    const attempts = prevState.attempts;
+    // const attempts = prevState.attempts;
     const guess = formData.get("guess") as unknown as number;
     if (guess && currentGuess) {
       const delta = parseFloat(currentGuess.nutriments.sugars) - guess;
@@ -57,14 +57,14 @@ export default async function Play() {
       );
       const score = await guessScore(delta);
       console.log("Your score is:", score);
-      return { attempts: [...attempts, `${guess.toString()},${score}`] };
+      // return { attempts: [...attempts, `${guess.toString()},${score}`] };
     }
     return { attempts: [] };
   };
 
   return (
-    <div className="container flex flex-col m-auto justify-center">
-      <div className="flex justify-center">
+    <div className="container flex flex-col m-auto justify-center bg-gradient">
+      <div className="flex justify-center gap-4 border-primary border-5">
         <Card>
           <CardHeader className="text-center">
             <CardTitle>{currentGuess?.product_name}</CardTitle>
@@ -89,17 +89,13 @@ export default async function Play() {
             <div className="w-full"></div>
           </CardFooter>
         </Card>
-        {currentGuess && (
-          <NutritionLabel
-            product={currentGuess}
-            className="border border-black m-5 float-left w-[400px] p-2 rounded-lg"
-          />
-        )}
+        <Submissions className="">
+          <GuessForm
+            onSubmit={submitGuess}
+            className="flex flex-col items-center justify-center"
+          ></GuessForm>
+        </Submissions>
       </div>
-      <GuessForm
-        onSubmit={submitGuess}
-        className="flex flex-col items-center justify-center"
-      ></GuessForm>
     </div>
   );
 }

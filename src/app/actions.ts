@@ -1,15 +1,15 @@
 "use server";
 import { Product } from "@/lib/types";
 
-export async function fetchGuess(): Promise<Product | null> {
+// Base URL for API v2 search
+const baseUrl = `https://world.openfoodfacts.org/api/v2/search`;
+
+export async function fetchProduct(): Promise<Product | null> {
   console.log("GET request made to /api/guess");
   const fields = "code,product_name,nutriments,brands,images,serving_size";
   const country = "united-states"; // Filtering by country
   const pageSize = 20; // Number of results per page
   const page = Math.floor(Math.random() * 8000) + 1;
-
-  // Base URL for API v2 search
-  const baseUrl = `https://world.openfoodfacts.org/api/v2/search`;
 
   // Constructing the query URL
   const queryUrl = `${baseUrl}?fields=${fields}&countries_tags_en=${country}&page_size=${pageSize}&page=${page}&tagtype_0=ingredients&tag_contains_0=contains&tag_0=sugar&json=true`;
@@ -40,7 +40,7 @@ export async function fetchGuess(): Promise<Product | null> {
     if (data.products.length === 0) {
       // retry if no products found
       console.log("No products found, retrying...");
-      return fetchGuess();
+      return fetchProduct();
     }
     const randomIndex = Math.floor(Math.random() * data.products.length);
     const randomProduct = data.products[randomIndex];
