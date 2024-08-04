@@ -21,7 +21,7 @@ export function constructFrontImageUrl(
       : barcode;
 
   if (fallback) {
-    return `/images/fallback.svg`;
+    return `/public/placeholder.webp`;
   }
   // Assuming 'front_en' as the default key for English front images
   const imageKey = "front_en";

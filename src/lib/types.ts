@@ -1,3 +1,7 @@
+export interface GameState {
+  productId?: string;
+}
+
 export interface Nutriment {
   [key: string]: string; // Example to handle various nutriment fields dynamically
 }

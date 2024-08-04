@@ -14,25 +14,21 @@ export default function Submissions({
         {/* {serving_size && <p className="m-0">Serving Size {serving_size}</p>} */}
       </header>
       {children}
-      <table className="w-full border-collapse">
-        <tbody>
-          <tr>
-            <th
-              colSpan={2}
-              className="font-normal text-left p-1 border-t border-primary whitespace-nowrap"
-            >
-              <b>Sugars</b>{" "}
-            </th>
-          </tr>
-        </tbody>
-      </table>
+      <div className="w-full border-collapse">
+        <div
+          // colSpan={2}
+          className="font-normal text-left p-1 border-t border-primary whitespace-nowrap"
+        >
+          <b>Sugars</b>{" "}
+        </div>
+      </div>
 
-      <table className="w-full border-collapse border-b border-primary-400 mb-2">
-        <tr>
-          <td className="text-left p-1">sugars</td>
-          <td className="text-right p-1">blah</td>
-        </tr>
-      </table>
+      <div className="w-full border-collapse border-b border-primary-400 mb-2">
+        <div>
+          <div className="text-left p-1">sugars</div>
+          <div className="text-right p-1">blah</div>
+        </div>
+      </div>
     </div>
   );
 }

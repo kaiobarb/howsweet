@@ -9,20 +9,24 @@ export async function fetchProduct(): Promise<Product | null> {
   const fields = "code,product_name,nutriments,brands,images,serving_size";
   const country = "united-states"; // Filtering by country
   const pageSize = 20; // Number of results per page
-  const page = Math.floor(Math.random() * 8000) + 1;
+  // const page = Math.floor(Math.random() * 8000) + 1;
+  const page = 10;
 
   // Constructing the query URL
   const queryUrl = `${baseUrl}?fields=${fields}&countries_tags_en=${country}&page_size=${pageSize}&page=${page}&tagtype_0=ingredients&tag_contains_0=contains&tag_0=sugar&json=true`;
 
   try {
     const response = await fetch(queryUrl, {
+      // cache: "force-cache",
+      next: { revalidate: 26000 },
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         // Specify a User-Agent to avoid being blocked by OFF
         "User-Agent": "HowSweetApp - Web - Version 1.0",
       },
     });
+    // console.log(response.headers);
 
     if (!response.ok) throw new Error("Network response was not ok.");
 
