@@ -23,11 +23,9 @@ export default function Submissions({
         </div>
       </div>
 
-      <div className="w-full border-collapse border-b border-primary-400 mb-2">
-        <div>
-          <div className="text-left p-1">sugars</div>
-          <div className="text-right p-1">blah</div>
-        </div>
+      <div className="flex flex-row w-full border-collapse border-b border-primary-400 mb-2">
+        <div className="text-left p-1">sugars</div>
+        <div className="text-right p-1">blah</div>
       </div>
     </div>
   );

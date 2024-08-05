@@ -23,7 +23,9 @@ const ProductCard = ({
   return (
     <Card>
       <CardHeader className="text-center">
-        <CardTitle>{product_name}</CardTitle>
+        <CardTitle className="font-bold text-3xl m-0 mb-1">
+          {product_name}
+        </CardTitle>
         <CardDescription>
           {brands ? `Produced by: ${brands}` : ""}
         </CardDescription>

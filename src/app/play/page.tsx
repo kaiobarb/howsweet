@@ -40,11 +40,18 @@ export default async function Play({
           <ProductCard product={currentGuess} imageUrl={imageUrl} />
         )}
         <Submissions className="">
-          <GuessForm
-            // onSubmit={submitGuess}
-            productBarcode={currentGuess?.code || ""}
-            className="flex flex-col items-center justify-center"
-          />
+          <>
+            <div className="flex flex-row justify-between w-full border-collapse p-1">
+              <div className="font-bold">Serving Size</div>
+              <div>{currentGuess?.serving_size || null}</div>
+            </div>
+
+            <GuessForm
+              // onSubmit={submitGuess}
+              productBarcode={currentGuess?.code || ""}
+              className="flex flex-col items-center justify-center"
+            />
+          </>
         </Submissions>
       </div>
     </div>
