@@ -2,6 +2,11 @@ export interface GameState {
   productId?: string;
 }
 
+export interface Attempt {
+  value: number;
+  feedback: string;
+}
+
 export interface Nutriment {
   [key: string]: string; // Example to handle various nutriment fields dynamically
 }

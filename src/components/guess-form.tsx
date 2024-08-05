@@ -1,34 +1,35 @@
 "use client";
 
+import { useFormState } from "react-dom";
+// import { useActionState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useFormState } from "react-dom";
+import { submitGuess } from "@/app/actions";
+import { Attempt } from "@/lib/types";
 
 interface GuessFormProps {
   children?: React.ReactNode;
   className?: string;
-  onSubmit: (
-    // prevState: { attempts: string[] },
-    formData: FormData
-  ) => Promise<{ attempts: string[] }>;
+  productBarcode: string;
 }
 
-const initialState: { attempts: string[] } | string = {
+const initialState: { attempts: Attempt[]; productBarcode: string } = {
   attempts: [],
+  productBarcode: "",
 };
 
 export default function GuessForm({
   children,
   className,
-  onSubmit,
+  productBarcode,
 }: GuessFormProps) {
-  // const [state, formAction] = useFormState(onSubmit, initialState);
+  const [state, formAction] = useFormState(submitGuess, initialState);
 
   return (
     <div className={className}>
-      <form action={onSubmit} className="flex w-full justify-center py-4">
+      <form action={formAction} className="flex w-full justify-center py-4">
         <Input
-          name="guess"
+          name="value"
           className="max-w-xs md:mr-2 lg:mr-4"
           min="0"
           placeholder="Enter your guess in grams per serving"
@@ -36,8 +37,12 @@ export default function GuessForm({
           required
         />
         <Button type="submit">Guess</Button>
+        <input type="hidden" name="productBarcode" value={productBarcode} />
       </form>
       {children}
+      {state.attempts.map((attempt, index) => (
+        <div key={index}>{attempt.feedback}</div>
+      ))}
       {/* <Table className="place-items-center shrink">
         <TableCaption>Your guesses</TableCaption>
         <TableBody>

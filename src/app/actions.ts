@@ -1,31 +1,28 @@
 "use server";
-import { Product } from "@/lib/types";
+import { Attempt, Product } from "@/lib/types";
 
 // Base URL for API v2 search
-const baseUrl = `https://world.openfoodfacts.org/api/v2/search`;
+const baseUrl = `https://world.openfoodfacts.org/api/v2`;
 
-export async function fetchProduct(): Promise<Product | null> {
-  console.log("GET request made to /api/guess");
+const fetchOptions = {
+  method: "GET",
+  headers: {
+    "User-Agent": "HowSweetApp - Web - Version 1.0",
+  },
+};
+
+export async function fetchRandomProduct(): Promise<Product | null> {
   const fields = "code,product_name,nutriments,brands,images,serving_size";
   const country = "united-states"; // Filtering by country
   const pageSize = 20; // Number of results per page
-  // const page = Math.floor(Math.random() * 8000) + 1;
-  const page = 10;
+  const page = Math.floor(Math.random() * 8000) + 1;
+  // const page = 10;
 
   // Constructing the query URL
-  const queryUrl = `${baseUrl}?fields=${fields}&countries_tags_en=${country}&page_size=${pageSize}&page=${page}&tagtype_0=ingredients&tag_contains_0=contains&tag_0=sugar&json=true`;
+  const randomProductQuery = `${baseUrl}/search?fields=${fields}&countries_tags_en=${country}&page_size=${pageSize}&page=${page}&tagtype_0=ingredients&tag_contains_0=contains&tag_0=sugar&json=true`;
 
   try {
-    const response = await fetch(queryUrl, {
-      // cache: "force-cache",
-      next: { revalidate: 26000 },
-      method: "GET",
-      headers: {
-        // "Content-Type": "application/json",
-        // Specify a User-Agent to avoid being blocked by OFF
-        "User-Agent": "HowSweetApp - Web - Version 1.0",
-      },
-    });
+    const response = await fetch(randomProductQuery, fetchOptions);
     // console.log(response.headers);
 
     if (!response.ok) throw new Error("Network response was not ok.");
@@ -44,7 +41,7 @@ export async function fetchProduct(): Promise<Product | null> {
     if (data.products.length === 0) {
       // retry if no products found
       console.log("No products found, retrying...");
-      return fetchProduct();
+      return fetchRandomProduct();
     }
     const randomIndex = Math.floor(Math.random() * data.products.length);
     const randomProduct = data.products[randomIndex];
@@ -57,3 +54,50 @@ export async function fetchProduct(): Promise<Product | null> {
   // if not found or other error, return empty response
   return null;
 }
+
+export const fetchProduct = async (barcode: string) => {
+  const productQuery = `${baseUrl}/product/${barcode}`;
+  try {
+    const response = await fetch(productQuery, fetchOptions);
+
+    const data = await response.json();
+
+    return data.product;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+  }
+  return {};
+};
+
+export const submitGuess = async (
+  // productBarcode: string,
+  state: {
+    attempts: Attempt[];
+  },
+  formData: FormData
+) => {
+  // const attempts = prevState.attempts;
+  const guess = formData.get("value") as unknown as number;
+  const barcode = formData.get("productBarcode") as unknown as string;
+  console.log("barcode: ", barcode);
+  console.log("submitting guess: ", guess);
+  if (guess) {
+    const product: Product = await fetchProduct(barcode);
+
+    if (!product.nutriments) throw new Error("No sugar");
+
+    const sugars = parseFloat(product.nutriments.sugars);
+
+    return {
+      attempts: [
+        ...state.attempts,
+        {
+          value: guess,
+          feedback: `You are off by ${(sugars - guess).toFixed(2)}`,
+        } as Attempt,
+      ],
+      // productBarcode: barcode,
+    };
+  }
+  return { attempts: [] };
+};
