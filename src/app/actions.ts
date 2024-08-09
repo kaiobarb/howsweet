@@ -1,5 +1,6 @@
 "use server";
 import { Attempt, Product } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 
 // Base URL for API v2 search
 const baseUrl = `https://world.openfoodfacts.org/api/v2`;
@@ -69,8 +70,21 @@ export const fetchProduct = async (barcode: string) => {
   return {};
 };
 
+const calculateFeedback = (delta: number, moe: number) => {
+  if (Math.abs(delta) < moe) {
+    return "Right on!";
+  } else if (delta > 0) {
+    return "Your guess was low";
+  } else if (delta < 0) {
+    return "You guessed too high";
+  } else if (delta > 15) {
+    return "You guessed too HIGH";
+  } else if (delta < -15) {
+    ("You guessed too LOW");
+  }
+};
+
 export const submitGuess = async (
-  // productBarcode: string,
   state: {
     attempts: Attempt[];
   },
@@ -88,15 +102,15 @@ export const submitGuess = async (
 
     const sugars = parseFloat(product.nutriments.sugars);
 
+    revalidatePath("/play");
     return {
       attempts: [
         ...state.attempts,
         {
           value: guess,
-          feedback: `You are off by ${(sugars - guess).toFixed(2)}`,
+          feedback: calculateFeedback(sugars - guess, 1),
         } as Attempt,
       ],
-      // productBarcode: barcode,
     };
   }
   return { attempts: [] };

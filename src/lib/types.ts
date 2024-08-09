@@ -1,7 +1,3 @@
-export interface GameState {
-  productId?: string;
-}
-
 export interface Attempt {
   value: number;
   feedback: string;

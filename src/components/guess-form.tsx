@@ -1,11 +1,12 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 // import { useActionState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { submitGuess } from "@/app/actions";
 import { Attempt } from "@/lib/types";
+import React from "react";
 
 interface GuessFormProps {
   children?: React.ReactNode;
@@ -17,6 +18,15 @@ const initialState: { attempts: Attempt[]; productBarcode: string } = {
   attempts: [],
   productBarcode: "",
 };
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending}>
+      Guess
+    </Button>
+  );
+}
 
 export default function GuessForm({
   children,
@@ -36,7 +46,7 @@ export default function GuessForm({
           type="number"
           required
         />
-        <Button type="submit">Guess</Button>
+        <SubmitButton />
         <input type="hidden" name="productBarcode" value={productBarcode} />
       </form>
       {children}

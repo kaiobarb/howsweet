@@ -2,12 +2,13 @@ export const runtime = "edge";
 
 import React from "react";
 import { constructFrontImageUrl } from "@/lib/utils";
-import { GameState, Product } from "@/lib/types";
-import { fetchRandomProduct } from "../actions";
+import { Product } from "@/lib/types";
+import { fetchProduct, fetchRandomProduct } from "../actions";
 
 import GuessForm from "@/components/guess-form";
 import Submissions from "./components/submissions";
 import ProductCard from "./components/product-card";
+import { GameState, GameStateController } from "./game-state-controller";
 
 export default async function Play({
   searchParams,
@@ -18,8 +19,10 @@ export default async function Play({
   let imageUrl = "";
   console.log("searchParams: ", searchParams);
 
-  if (Object.entries(searchParams || {}).length === 0) {
+  if (!searchParams?.item) {
     currentGuess = await fetchRandomProduct();
+  } else {
+    currentGuess = await fetchProduct(searchParams.item);
   }
 
   if (!currentGuess?.images || !currentGuess.images.front_en) {
@@ -36,6 +39,7 @@ export default async function Play({
   return (
     <div className="container flex flex-col m-auto justify-center bg-gradient">
       <div className="flex justify-center gap-4 border-primary border-5">
+        <GameStateController item={searchParams?.item || currentGuess?.code} />
         {currentGuess && (
           <ProductCard product={currentGuess} imageUrl={imageUrl} />
         )}
