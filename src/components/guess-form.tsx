@@ -5,7 +5,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { submitGuess } from "@/app/actions";
-import { Attempt } from "@/lib/types";
+import { Attempt } from "@types";
 import React from "react";
 
 interface GuessFormProps {

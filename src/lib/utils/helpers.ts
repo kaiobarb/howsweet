@@ -52,3 +52,17 @@ export async function guessScore(delta: number) {
   }
   return `${magnitude},${highOrLow}`;
 }
+
+export const calculateFeedback = (delta: number, moe: number) => {
+  if (Math.abs(delta) < moe) {
+    return "Right on!";
+  } else if (delta > 0) {
+    return "Your guess was low";
+  } else if (delta < 0) {
+    return "You guessed too high";
+  } else if (delta > 15) {
+    return "You guessed too HIGH";
+  } else if (delta < -15) {
+    ("You guessed too LOW");
+  }
+};

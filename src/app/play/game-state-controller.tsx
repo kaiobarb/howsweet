@@ -14,7 +14,6 @@ export const GameStateController = ({ item }: GameState) => {
     // const barcode = searchParams;
     const params = new URLSearchParams();
     params.set("item", item);
-    console.log("params", params.toString());
     router.push(`?${params.toString()}`);
   }
   return null;

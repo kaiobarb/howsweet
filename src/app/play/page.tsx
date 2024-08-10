@@ -1,9 +1,8 @@
 export const runtime = "edge";
-
 import React from "react";
 import { constructFrontImageUrl } from "@/lib/utils";
 import { Product } from "@/lib/types";
-import { fetchProduct, fetchRandomProduct } from "../actions";
+import { fetchProduct, fetchRandomProduct } from "@utils";
 
 import GuessForm from "@/components/guess-form";
 import Submissions from "./components/submissions";
