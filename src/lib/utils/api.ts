@@ -1,4 +1,3 @@
-"use server";
 import { Product } from "@types";
 
 // Base URL for API v2 search
@@ -7,7 +6,6 @@ const baseUrl = `https://world.openfoodfacts.org/api/v2`;
 const fetchOptions = {
   method: "GET",
   next: { revalidate: 3600 },
-  //   revalidate: 25600,
   headers: {
     "User-Agent": "HowSweetApp - Web - Version 1.0",
   },
@@ -59,7 +57,7 @@ export const fetchProduct = async (barcode: string) => {
   const productQuery = `${baseUrl}/product/${barcode}`;
   try {
     const response = await fetch(productQuery, fetchOptions);
-    console.log("CACHE STATUS: ", response.headers.get("x-cache-status"));
+    // console.log("CACHE STATUS: ", response.headers.get("x-cache-status"));
 
     const data = await response.json();
 

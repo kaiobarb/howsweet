@@ -8,6 +8,7 @@ import GuessForm from "@/components/guess-form";
 import Submissions from "./components/submissions";
 import ProductCard from "./components/product-card";
 import { GameState, GameStateController } from "./game-state-controller";
+import { resetAttempts } from "../actions";
 
 export default async function Play({
   searchParams,
@@ -19,6 +20,7 @@ export default async function Play({
   console.log("searchParams: ", searchParams);
 
   if (!searchParams?.item) {
+    await resetAttempts();
     currentGuess = await fetchRandomProduct();
   } else {
     currentGuess = await fetchProduct(searchParams.item);
