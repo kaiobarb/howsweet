@@ -4,9 +4,14 @@ import { calculateFeedback, fetchProduct } from "@utils";
 import { revalidatePath } from "next/cache";
 
 const attempts: Attempt[] = [];
+let answer: number = 0;
 
 export const getAttempts = async () => {
   return attempts;
+};
+
+export const getAnswer = async () => {
+  return answer;
 };
 
 export const resetAttempts = async () => {
@@ -26,8 +31,9 @@ export const submitGuess = async (
 
     if (!product.nutriments) throw new Error("No sugar");
 
-    const sugars = parseFloat(product.nutriments.sugars);
-    console.log(":::::::::SUGARS::: ", sugars);
+    const sugars = parseFloat(product.nutriments.sugars_serving);
+    answer = sugars;
+    console.log(":::::::::SUGARS::: ", product.nutriments.sugars_serving);
 
     attempts.push({
       value: guess,

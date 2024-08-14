@@ -1,4 +1,4 @@
-import { getAttempts } from "@/app/actions";
+import { getAnswer, getAttempts } from "@/app/actions";
 import {
   Table,
   TableBody,
@@ -9,6 +9,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ReactElement } from "react";
+import EndModal from "./end-modal";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 export default async function Submissions({
   className,
@@ -17,23 +21,28 @@ export default async function Submissions({
   className?: string;
   children?: ReactElement;
 }) {
+  // const [gameEnd, setGameEnd] = React.useState(false);
+  let gameEnd = false;
+  let sugars = 0;
   const attempts = await getAttempts();
-  console.log("ATTEMPTS ", attempts);
+  if (attempts.length >= 5) {
+    gameEnd = true;
+    sugars = await getAnswer();
+  }
+  // async function startNextGame() {
+  //   "use server";
+  //   redirect("/play");
+  // }
   return (
     <div className={className + " border-primary border-2 rounded-sm p-4"}>
+      <EndModal open={gameEnd}>
+        The correct answer was {sugars}g of sugar per serving
+        {/* <Button onClick={startNextGame}>Play Again</Button> */}
+      </EndModal>
       <header className="border-b-8 border-primary pb-1 mb-2">
         <h1 className="font-bold text-4xl m-0 mb-1">Your Guesses</h1>
-        {/* {serving_size && <p className="m-0">Serving Size {serving_size}</p>} */}
       </header>
       {children}
-      {/* <div className="w-full border-collapse">
-        <div
-          // colSpan={2}
-          className="font-normal text-left p-1 border-t border-primary whitespace-nowrap"
-        >
-          <b>Sugars</b>{" "}
-        </div>
-      </div> */}
       <Table className="place-items-center shrink">
         <TableHeader className="border-primary border-b-8">
           <TableRow>
@@ -68,12 +77,6 @@ export default async function Submissions({
         </TableBody>
         <TableCaption>Get within 5% of the correct answer</TableCaption>
       </Table>
-      {/* {attempts.map((a) => (
-        <div className="flex flex-row w-full border-collapse border-b border-primary-400 mb-2">
-          <div className="text-left p-1">{a.value}</div>
-          <div className="text-right p-1">{a.feedback}</div>
-        </div>
-      ))} */}
     </div>
   );
 }

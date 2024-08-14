@@ -8,7 +8,7 @@ const Nav = () => {
         <div />
         <div className="space-y-1 text-center text-primary">
           <h1 className="text-5xl font-bold tracking-tighter">How Sweet!</h1>
-          <p className="text-md tracking-wide font-inter">
+          <p className="text-md tracking-wide font-fredoka">
             A sugar guessing game
           </p>
         </div>

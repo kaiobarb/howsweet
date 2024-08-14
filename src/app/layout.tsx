@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Fredoka } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
 import Nav from "@/components/nav";
@@ -11,6 +11,11 @@ const playwrite = localFont({
 });
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const fredoka = Fredoka({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-fredoka",
+});
 
 export const metadata: Metadata = {
   title: "How Sweet!",
@@ -23,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playwrite.variable}`}>
-      <body className={inter.className}>
+    <html lang="en" className={`${fredoka.variable} ${playwrite.variable}`}>
+      <body className={fredoka.className}>
         <ThemeProvider attribute="class" defaultTheme="system">
           <div className="flex flex-col min-h-screen bg-background">
             <Nav />
