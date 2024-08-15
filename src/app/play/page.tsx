@@ -44,7 +44,7 @@ export default async function Play({
         {currentGuess && (
           <ProductCard product={currentGuess} imageUrl={imageUrl} />
         )}
-        <Submissions className="">
+        <Submissions className="" barcode={currentGuess?.code || ""}>
           <>
             <div className="flex flex-row justify-between w-full border-collapse p-1">
               <div className="font-bold">Serving Size</div>

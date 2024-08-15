@@ -10,17 +10,23 @@ import {
 const EndModal = ({
   open,
   children,
+  win,
 }: {
   open: boolean;
   children: React.ReactNode[];
+  win?: boolean;
 }) => {
   return (
     <Dialog open={open}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent>
+      <DialogContent className="text-center">
         <DialogHeader>
-          <DialogTitle>You Lose!</DialogTitle>
-          <DialogDescription>Better luck next time.</DialogDescription>
+          <DialogTitle className="text-center">
+            {win ? "You Win!" : "You Lose!"}
+          </DialogTitle>
+          <DialogDescription className="text-center">
+            {win ? "How sweet :)" : "Better luck next time."}
+          </DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>

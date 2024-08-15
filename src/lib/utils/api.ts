@@ -19,6 +19,7 @@ export async function fetchRandomProduct(): Promise<Product | null> {
 
   // Constructing the query URL
   const randomProductQuery = `${baseUrl}/search?fields=${fields}&countries_tags_en=${country}&page_size=${pageSize}&page=${page}&tagtype_0=ingredients&tag_contains_0=contains&tag_0=sugar&json=true`;
+  console.log(randomProductQuery);
 
   try {
     const response = await fetch(randomProductQuery, fetchOptions);
