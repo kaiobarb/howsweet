@@ -33,7 +33,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system">
           <div className="flex flex-col min-h-screen bg-background">
             <Nav />
-            <main className="flex-1 py-6 grid ">{children}</main>
+            <main className="pt-12">{children}</main>
           </div>
         </ThemeProvider>
       </body>

@@ -1,31 +1,37 @@
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  //   DialogTrigger,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 const EndModal = ({
-  open,
+  className,
   children,
-  win,
+  title,
+  description,
+  buttonText,
 }: {
-  open: boolean;
-  children: React.ReactNode[];
-  win?: boolean;
+  className?: string;
+  children: React.ReactNode;
+  title: string;
+  description: string;
+  buttonText: string;
 }) => {
   return (
-    <Dialog open={open}>
-      {/* <DialogTrigger>Open</DialogTrigger> */}
+    <Dialog defaultOpen>
+      <DialogTrigger className={className} asChild>
+        <Button>{buttonText}</Button>
+      </DialogTrigger>
       <DialogContent className="text-center">
         <DialogHeader>
-          <DialogTitle className="text-center">
-            {win ? "You Win!" : "You Lose!"}
-          </DialogTitle>
+          <DialogTitle className="text-center">{title}</DialogTitle>
           <DialogDescription className="text-center">
-            {win ? "How sweet :)" : "Better luck next time."}
+            {description}
           </DialogDescription>
         </DialogHeader>
         {children}
@@ -33,4 +39,5 @@ const EndModal = ({
     </Dialog>
   );
 };
+
 export default EndModal;

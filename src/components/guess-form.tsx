@@ -1,42 +1,18 @@
-"use client";
-
-import { useFormState, useFormStatus } from "react-dom";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { submitGuess } from "@/app/actions";
-import { Attempt } from "@types";
+import SubmitButton from "@/app/play/components/submit-button";
 import React from "react";
 
 interface GuessFormProps {
   children?: React.ReactNode;
   className?: string;
-  productBarcode: string;
+  barcode?: string;
 }
 
-const initialState: { attempts: Attempt[]; productBarcode: string } = {
-  attempts: [],
-  productBarcode: "",
-};
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending}>
-      Guess
-    </Button>
-  );
-}
-
-export default function GuessForm({
-  children,
-  className,
-  productBarcode,
-}: GuessFormProps) {
-  const [state, formAction] = useFormState(submitGuess, initialState);
-
+export default function GuessForm({ className, barcode }: GuessFormProps) {
   return (
     <div className={className}>
-      <form action={formAction} className="flex w-full justify-center py-4">
+      <form action={submitGuess} className="flex w-full justify-center py-4">
         <Input
           name="value"
           className="max-w-xs md:mr-2 lg:mr-4"
@@ -47,9 +23,8 @@ export default function GuessForm({
           required
         />
         <SubmitButton />
-        <input type="hidden" name="productBarcode" value={productBarcode} />
+        <input type="hidden" name="barcode" value={barcode} />
       </form>
-      {children}
     </div>
   );
 }

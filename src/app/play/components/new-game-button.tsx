@@ -1,9 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import React from "react";
 
-const NewGameButton = () => {
-  const router = useRouter();
-  return <Button onClick={() => router.push("/play")}>Play Again</Button>;
+const NewGameButton = ({ onNewGameStart }: { onNewGameStart: () => void }) => {
+  const [clicked, setClicked] = React.useState(false);
+
+  const handleClick = () => {
+    setClicked(true);
+    onNewGameStart();
+  };
+  return (
+    <Button onClick={handleClick} disabled={clicked}>
+      {clicked ? "Finding a new product..." : "Play Again"}
+    </Button>
+  );
 };
 export default NewGameButton;
